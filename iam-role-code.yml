@@ -1,28 +1,30 @@
-AWSTemplateFormatVersion: 2010-09-09
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create IAM Role for EC2 Instance
 
 Resources:
-  ExampleBucket:
-    Type: AWS::S3::Bucket
-
-  ExampleRole:
+  MyEC2Role:
     Type: AWS::IAM::Role
-    Properties:
+    Properties: 
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
-          - Effect: Allow
+          - Effect: "Allow"
             Principal:
-              Service:
-                - ec2.amazonaws.com
-            Action:
-              - sts:AssumeRole
+              Service: "ec2.amazonaws.com"
+            Action: "sts:AssumeRole"
       Policies:
-        - PolicyName: 4pm-batch-demo
+        - PolicyName: "EC2InstancePolicy"
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
-              - Effect: Allow
+              - Effect: "Allow"
                 Action:
-                  - s3:GetObject
-                  - s3:ListBucket
-                Resource: !arn:aws:s3:::1.30pm-bucket-demo/*
+                  - "s3:ListBucket"
+                  - "s3:GetObject"
+                Resource: 
+                  - "*"
+
+Outputs:
+  RoleName:
+    Description: "The name of the IAM role"
+    Value: !Ref MyEC2Role
